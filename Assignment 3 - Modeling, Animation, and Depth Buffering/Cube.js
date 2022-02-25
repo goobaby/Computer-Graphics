@@ -1,96 +1,111 @@
 const DefaultNumSides = 8;
 
-function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
+function Cube(gl) {
 
-    // Initialize the shader pipeline for this object using either shader ids
-    //   declared in the application's HTML header, or use the default names.
-    //
-    var vertShdr = vertexShaderId || "Cube-vertex-shader";
-    var fragShdr = fragmentShaderId || "Cube-fragment-shader";
+  var program = initShaders(gl, "Cube-vertex-shader", "Cube-fragment-shader");
 
-    this.program = initShaders(gl, vertShdr, fragShdr);
+  var positions = [
+    // Front face
+    -1.0, -1.0,  1.0,
+     1.0, -1.0,  1.0,
+     1.0,  1.0,  1.0,
+    -1.0,  1.0,  1.0,
 
-    if ( this.program < 0 ) {
-        alert( "Error: Cube shader pipeline failed to compile.\n\n" +
-            "\tvertex shader id:  \t" + vertShdr + "\n" +
-            "\tfragment shader id:\t" + fragShdr + "\n" );
-        return; 
-    }
+    // Back face
+    -1.0, -1.0, -1.0,
+    -1.0,  1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0, -1.0, -1.0,
 
-    var n = numSides || DefaultNumSides; // Number of sides 
+    // Top face
+    -1.0,  1.0, -1.0,
+    -1.0,  1.0,  1.0,
+     1.0,  1.0,  1.0,
+     1.0,  1.0, -1.0,
 
-    var theta = 0.0;
-    var dTheta = 2.0 * Math.PI / n;
-    
-    // Record the number of components for each vertex's position in the Cube object's 
-    //   positions property. (that's why there's a "this" preceding the positions here).
-    //   Here, we both create the positions object, as well as initialize its
-    //   numComponents field.
-    //
-    this.positions = { numComponents : 3 };
-    
-    // Initialize temporary arrays for the Cube's indices and vertex positions
-    //
-    var positions = [ 0.0, 0.0, 0.0 ];
-    var indices = [ 0 ];
-    
-    for ( var i = 0; i < n; ++i ) {
-        theta = i * dTheta;
-        positions.push( Math.cos(theta), Math.sin(theta), 0.0 );
+    // Bottom face
+    -1.0, -1.0, -1.0,
+     1.0, -1.0, -1.0,
+     1.0, -1.0,  1.0,
+    -1.0, -1.0,  1.0,
 
-        indices.push(n - i);
-    }
+    // Right face
+     1.0, -1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0,  1.0,  1.0,
+     1.0, -1.0,  1.0,
 
-    positions.push( 0.0, 0.0, 1.0 );
-    
-    // Close the triangle fan by repeating the first (non-center) point.
-    //
-    indices.push(n);
+    // Left face
+    -1.0, -1.0, -1.0,
+    -1.0, -1.0,  1.0,
+    -1.0,  1.0,  1.0,
+    -1.0,  1.0, -1.0,
+  ];
 
-    // Record the number of indices in one of our two disks that we're using to make the
-    //   Cube.  At this point, the indices array contains the correct number of indices for a
-    //   single disk, and as we render the Cube as two disks of the same size, this value is
-    //   precisely what we need.
-    //
-    this.indices = { count : indices.length };
+  var indices = [
+    0,  1,  2,      0,  2,  3,    // front
+    4,  5,  6,      4,  6,  7,    // back
+    8,  9,  10,     8,  10, 11,   // top
+    12, 13, 14,     12, 14, 15,   // bottom
+    16, 17, 18,     16, 18, 19,   // right
+    20, 21, 22,     20, 22, 23,   // left
+  ];
 
-    // Now build up the list for the Cube.  First, add the apex vertex onto the index list
-    //
-    indices.push(n + 1);
+  var edges = [
+    0, 1,  // "Front" face edges
+    1, 2,
+    2, 3,
+    3, 0,
+    4, 5,  // "Back" face edges
+    5, 6,
+    6, 7,
+    7, 4,
+    0, 4,  // "Side" edges
+    1, 5,
+    2, 6,
+    3, 7
+];
+  positions.numComponents = 3;
 
-    // Next, we need to append the rest of the vertices for the permieter of the disk.
-    // However, the Cube's perimeter vertices need to be reversed since it's effectively a
-    // reflection of the bottom disk.
-    //
-    indices = indices.concat( indices.slice(1,n+2).reverse() );
+  positions.buffer = gl.createBuffer();
+  gl.bindBuffer( gl.ARRAY_BUFFER, positions.buffer );
+  gl.bufferData( gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW );
 
-    this.positions.buffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, this.positions.buffer );
-    gl.bufferData( gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW );
+  indices.buffer = gl.createBuffer();
+  gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, indices.buffer );
+  gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW );
 
-    this.indices.buffer = gl.createBuffer();
-    gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.indices.buffer );
-    gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW );
+  edges.buffer = gl.createBuffer();
+  gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, edges.buffer );
+  gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(edges), gl.STATIC_DRAW );
+  
+  positions.aPosition = gl.getAttribLocation( program, "aPosition" );
+  gl.enableVertexAttribArray( positions.aPosition );
 
-    this.positions.attributeLoc = gl.getAttribLocation( this.program, "aPosition" );
-    gl.enableVertexAttribArray( this.positions.attributeLoc );
+  var MV = gl.getUniformLocation(program, "MV");
 
-    this.render = function () {
-        gl.useProgram( this.program );
+  var P = gl.getUniformLocation(program, "P")
 
-        gl.bindBuffer( gl.ARRAY_BUFFER, this.positions.buffer );
-        gl.vertexAttribPointer( this.positions.attributeLoc, this.positions.numComponents,
-            gl.FLOAT, gl.FALSE, 0, 0 );
- 
-        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.indices.buffer );
+  this.mv = mat4();
 
-        // Draw the Cube's base
-        //
-        gl.drawElements( gl.POINTS, this.indices.count, gl.UNSIGNED_SHORT, 0 );
+  this.p = mat4();
 
-        // Draw the Cube's top
-        //
-        var offset = this.indices.count * 2 /* sizeof(UNSIGNED_INT) */;
-        gl.drawElements( gl.POINTS, this.indices.count, gl.UNSIGNED_SHORT, offset );
-    }
+  this.render = function () {
+      gl.useProgram( program );
+
+      gl.uniformMatrix4fv(MV, false, flatten(this.mv));
+
+      gl.uniformMatrix4fv(P, false, flatten(this.p));
+
+      gl.bindBuffer( gl.ARRAY_BUFFER, positions.buffer );
+      gl.vertexAttribPointer( positions.aPosition, positions.numComponents,
+          gl.FLOAT, false, 0, 0 );
+      
+      // Render the wireframe version of the cube
+      gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, edges.buffer );
+      gl.drawElements( gl.LINES, edges.length, gl.UNSIGNED_SHORT, 0 );
+      
+      gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, indices.buffer );
+      gl.drawElements( gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0 );
+  }
 };

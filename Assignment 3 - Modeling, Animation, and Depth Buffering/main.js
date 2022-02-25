@@ -1,20 +1,44 @@
 //
 //  main.js
 //
+angle = 0;
 
 function init()
 {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
-    gl.clearColor(0.0, 0.5, 0.0, 1.0);
-    cube = new Cube(gl, 1000);
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    cube = new Cube(gl);
     render();
 }
 
 function render()
 {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    //var canvas;
+
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    //motion var
+    angle += 1;
+
+    R = rotate(angle, [1,1,1]);
+
+    //var width = canvas.clientWidth, height = canvas.clientHeight;
+
+    //gl.viewport(0, 0,width, height);
+
+    //aspect = width, height;
+
+    //P = perspective(100, 100, 10, 1000)
+
+    cube.mv = R;
+
+    //cube.p = P;
+
     cube.render();
+
+    requestAnimationFrame(render);
 }
 
 
