@@ -15,7 +15,7 @@ function init()
 function render()
 {
 
-    //var canvas;
+    var canvas;
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -30,11 +30,11 @@ function render()
 
     //aspect = width, height;
 
-    //P = perspective(100, 100, 10, 1000)
+    P = perspective(60, 1, 1, 20)
 
     cube.mv = R;
 
-    //cube.p = P;
+    cube.p = P;
 
     cube.render();
 

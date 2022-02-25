@@ -101,9 +101,9 @@ function Cube(gl) {
       gl.vertexAttribPointer( positions.aPosition, positions.numComponents,
           gl.FLOAT, false, 0, 0 );
       
-      // // Render the wireframe version of the cube
-      // gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, edges.buffer );
-      // gl.drawElements( gl.LINES, edges.length, gl.UNSIGNED_SHORT, 0 );
+      // Render the wireframe version of the cube
+      gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, edges.buffer );
+      gl.drawElements( gl.LINES, edges.length, gl.UNSIGNED_SHORT, 0 );
       
       gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, indices.buffer );
       gl.drawElements( gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0 );
