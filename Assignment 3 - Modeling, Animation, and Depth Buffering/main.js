@@ -30,7 +30,7 @@ function render()
 
     //aspect = width, height;
 
-    P = perspective(60, 1, 1, 20)
+    P = perspective(120, 1, 1, 20)
 
     cube.mv = R;
 

@@ -18,7 +18,7 @@
         void main()
         {
             gl_PointSize = 3.0;
-            gl_Position = (P * MV) *( aPosition - vec4(.5, .5, .5, 0));
+            gl_Position = (MV) *( aPosition - vec4(.5, .5, .5, 0));
 
             vColor = aPosition;
         }
