@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <script type="text/javascript" src="initShaders.js"></script>
+    <script type="text/javascript" src="Dragon.js"></script>
+    <script type="text/javascript" src="mainForDragon.js"></script>
+    <script type="text/javascript" src="MV.js"></script>
+
+
+    <script id="Dragon-vertex-shader" type="x-shader/x-vertex">#version 300 es
+        in vec4 aPosition;
+
+        out vec4 vColor;
+
+        uniform mat4 MV;
+
+        uniform mat4 P;
+
+        void main()
+        {
+            gl_PointSize = 3.0;
+            gl_Position =  aPosition ;
+
+            vColor = aPosition;
+        }
+    </script>
+
+    <script id="Dragon-fragment-shader" type="x-shader/x-fragment">#version 300 es
+        precision highp float;
+
+        in vec4 vColor;
+
+        out vec4 fColor;
+        
+        void main()
+        {
+            fColor = vColor;
+        }
+    </script>
+</head>
+<body>
+    <canvas id="webgl-canvas" width="512" height="512"></canvas>
+</body>
