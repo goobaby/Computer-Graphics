@@ -7,7 +7,7 @@ function init()
 {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST)
     cube = new Cube(gl);
     render();
@@ -31,7 +31,7 @@ function render()
 
     //aspect = width, height;
 
-    P = perspective(120, 1, 1, 50)
+    P = perspective(60, 1, 10, 100)
 
     cube.mv = R;
 
