@@ -31,7 +31,11 @@ function render()
 
     //aspect = width, height;
 
-    P = perspective(60, 1, 10, 100)
+    
+
+    P = perspective(120, 1, 10, 100)
+
+    //console.log(P)
 
     cube.mv = R;
 
