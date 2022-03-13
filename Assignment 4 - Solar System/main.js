@@ -9,6 +9,8 @@ function init() {
    
     // Add your sphere creation and configuration code here
 
+    sun = new Sphere();
+
     requestAnimationFrame(render);
 }
 
