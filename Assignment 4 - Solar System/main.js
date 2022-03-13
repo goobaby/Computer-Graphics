@@ -1,6 +1,3 @@
-
-"use strict";
-
 var gl;
 
 function init() {
