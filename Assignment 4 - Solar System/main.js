@@ -41,17 +41,17 @@ function init() {
     Saturn = new Sphere();
     Saturn.radius = 2;
     Saturn.distance = 40;
-    Saturn.color = vec4(234, 214, 184, 1.0);
+    Saturn.color = vec4(.234, 214, .184, 1.0);
 
     //Saturn Disk
-    saturnDisk = new Disk
-    Saturn.radius = 2;
-    Saturn.distance = 40;
-    Saturn.color = vec4(101,95,69, 1.0);
+    saturnDisk = new Disk(100, 1.25);
+    saturnDisk.radius = 4;
+    saturnDisk.distance = 40;
+    saturnDisk.color = vec4(.101,.95,.69, 1.0);
 
 
     near = 1;
-    D = 2 * (900 + Earth.orbit + Moon.orbit + Moon.radius);
+    D = 2 * (2000 + Earth.orbit + Moon.orbit + Moon.radius);
 
     angle = Math.atan((D/2) / (near + (D/2)));
     fovy = 2 * Math.atan(angle);
@@ -95,6 +95,7 @@ function render() {
     Sun.render();
     ms.pop();
 
+    //Earth and its Moon
     ms.push();
     ms.rotate(Earth.year, [0,50,0]); //year
     ms.translate(Earth.distance, 0, 0);
@@ -104,6 +105,7 @@ function render() {
     Earth.MV = ms.current();
     Earth.render();
     ms.pop();
+    //Moon
     ms.rotate(Moon.rotation, [0,20,0]); //Moon go around earth
     ms.translate(Moon.distance, 0, 0);
     ms.rotate(Moon.rotation, [1, 0,0]); //Dark side of the moon
@@ -112,12 +114,18 @@ function render() {
     Moon.render();
     ms.pop();
 
+    //Saturn
     ms.push();
     ms.rotate(Saturn.year, [0, 90, 0]);
     ms.translate(Saturn.distance, 0, 0);
+    ms.push();
     ms.scale(Saturn.radius);
     Saturn.MV = ms.current();
     Saturn.render();
+    ms.pop();
+    //Sat Ring
+    ms.rotate(Saturn.year, [1,0,1]);
+    ms.scale(saturnDisk.radius);
     saturnDisk.MV = ms.current();
     saturnDisk.render();
     ms.pop();
