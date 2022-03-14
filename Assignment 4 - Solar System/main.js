@@ -34,11 +34,11 @@ function init() {
     Moon = new Sphere();
     Moon.radius = .25;
     Moon.orbit = 0.552640911;
-    Moon.distance = 26;
+    Moon.distance = 10;
     Moon.color = vec4(1, 1, 1, 1.0)
 
     near = 1;
-    D = 2 * (Earth.orbit + Moon.orbit + Moon.radius);
+    D = 2 * (900 + Earth.orbit + Moon.orbit + Moon.radius);
 
     angle = Math.atan((D/2) / (near + (D/2)));
     fovy = 2 * Math.atan(angle);
@@ -56,7 +56,10 @@ function render() {
     // Update your motion variables here
     earthDay += 1
     Sun.rotation = (earthDay/27);
-    Earth.rotation = earthDay
+    Earth.rotation = earthDay;
+    Earth.year = earthDay/2;
+    Moon.rotation = (earthDay/27.322);
+    //365 is too slow
     //console.log(Sun.rotation);
 
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -78,7 +81,7 @@ function render() {
     ms.pop();
 
     ms.push();
-    ms.rotate(Earth.rotation, [1,50,0]); //year
+    ms.rotate(Earth.year, [0,50,0]); //year
     ms.translate(Earth.distance, 0, 0);
     ms.push();
     ms.rotate(Earth.rotation, [1,0,0]); //day
@@ -87,6 +90,7 @@ function render() {
     Earth.render();
     ms.pop();
     ms.translate(Moon.distance, 0, 0);
+    ms.rotate(Moon.rotation, [0,1,0]); //Moon go around earth
     ms.scale(Moon.radius);
     Moon.MV = ms.current();
     Moon.render();
