@@ -37,6 +37,19 @@ function init() {
     Moon.distance = 10;
     Moon.color = vec4(1, 1, 1, 1.0)
 
+    //Saturn the ball part
+    Saturn = new Sphere();
+    Saturn.radius = 2;
+    Saturn.distance = 40;
+    Saturn.color = vec4(234, 214, 184, 1.0);
+
+    //Saturn Disk
+    saturnDisk = new Disk
+    Saturn.radius = 2;
+    Saturn.distance = 40;
+    Saturn.color = vec4(101,95,69, 1.0);
+
+
     near = 1;
     D = 2 * (900 + Earth.orbit + Moon.orbit + Moon.radius);
 
@@ -46,7 +59,7 @@ function init() {
 
     var far = near + D
 
-    Sun.P = Earth.P = Moon.P = perspective(fovy, aspect, near, far);
+    saturnDisk.P = Saturn.P = Sun.P = Earth.P = Moon.P = perspective(fovy, aspect, near, far);
 
     requestAnimationFrame(render);
 }
@@ -59,6 +72,8 @@ function render() {
     Earth.rotation = earthDay;
     Earth.year = earthDay/2;
     Moon.rotation = earthDay;
+
+    Saturn.year = earthDay/3;
     //365 is too slow
     //console.log(Sun.rotation);
 
@@ -97,6 +112,15 @@ function render() {
     Moon.render();
     ms.pop();
 
+    ms.push();
+    ms.rotate(Saturn.year, [0, 90, 0]);
+    ms.translate(Saturn.distance, 0, 0);
+    ms.scale(Saturn.radius);
+    Saturn.MV = ms.current();
+    Saturn.render();
+    saturnDisk.MV = ms.current();
+    saturnDisk.render();
+    ms.pop();
 
     requestAnimationFrame(render);
 }
