@@ -6,6 +6,8 @@ var D;
 var fovy;
 var aspect;
 
+var earthDay = 1;
+
 function init() {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
@@ -18,21 +20,24 @@ function init() {
     //Sun
     Sun = new Sphere();
     Sun.color = vec4(1, 1, 0, 1.0);
-    Sun.radius = 1;
+    Sun.radius = 10;
     Sun.rotation = 0;
-    Sun.P = perspective()
 
     //Earth
     Earth = new Sphere();
-    Earth.radius = 0.009157785004;
+    Earth.radius = 1;
+    Earth.distance = 25;
     Earth.orbit = 2137.20975731;
+    Earth.color = vec4(0, 1, 1, 1.0);
 
     //Moon
     Moon = new Sphere();
-    Moon.radius = 0.00249740949;
+    Moon.radius = .25;
     Moon.orbit = 0.552640911;
+    Moon.distance = 26;
+    Moon.color = vec4(1, 1, 1, 1.0)
 
-    near = 10;
+    near = 1;
     D = 2 * (Earth.orbit + Moon.orbit + Moon.radius);
 
     angle = Math.atan((D/2) / (near + (D/2)));
@@ -49,8 +54,9 @@ function init() {
 function render() {
 
     // Update your motion variables here
-
-    Sun.rotation += (1/27);
+    earthDay += 1
+    Sun.rotation = (earthDay/27);
+    Earth.rotation = earthDay
     //console.log(Sun.rotation);
 
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -65,13 +71,26 @@ function render() {
 
     ms.push();
     ms.scale(Sun.radius);
-    ms.rotate(Sun.rotation, [1,1,1]);
+    ms.rotate(Sun.rotation, [1,0,0]);
     // set up other parameters required to draw Sun
     Sun.MV = ms.current();
     Sun.render();
-
     ms.pop();
 
+    ms.push();
+    ms.rotate(Earth.rotation, [1,50,0]); //year
+    ms.translate(Earth.distance, 0, 0);
+    ms.push();
+    ms.rotate(Earth.rotation, [1,0,0]); //day
+    ms.scale(Earth.radius);
+    Earth.MV = ms.current();
+    Earth.render();
+    ms.pop();
+    ms.translate(Moon.distance, 0, 0);
+    ms.scale(Moon.radius);
+    Moon.MV = ms.current();
+    Moon.render();
+    ms.pop();
 
 
     requestAnimationFrame(render);
