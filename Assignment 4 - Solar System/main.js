@@ -34,7 +34,7 @@ function init() {
     Moon = new Sphere();
     Moon.radius = .25;
     Moon.orbit = 0.552640911;
-    Moon.distance = 10;
+    Moon.distance = 2;
     Moon.color = vec4(1, 1, 1, 1.0)
 
     //Saturn the ball part
@@ -99,7 +99,7 @@ function render() {
     ms.push();
     ms.rotate(Earth.year, [0,50,0]); //year
     ms.translate(Earth.distance, 0, 0);
-    ms.push();
+    ms.push(); //Save for moon
     ms.rotate(Earth.rotation, [1,0,0]); //day
     ms.scale(Earth.radius);
     Earth.MV = ms.current();
@@ -118,13 +118,14 @@ function render() {
     ms.push();
     ms.rotate(Saturn.year, [0, 90, 0]);
     ms.translate(Saturn.distance, 0, 0);
-    ms.push();
+    ms.push(); //Ring 1
     ms.scale(Saturn.radius);
     Saturn.MV = ms.current();
     Saturn.render();
     ms.pop();
     //Sat Ring
-    ms.rotate(Saturn.year, [1,0,1]);
+    ms.rotate(27, [1,0,0]);
+    //ms.rotate(Saturn.ring, [1,0,0]);
     ms.scale(saturnDisk.radius);
     saturnDisk.MV = ms.current();
     saturnDisk.render();
