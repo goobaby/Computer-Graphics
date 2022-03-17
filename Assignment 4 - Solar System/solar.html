@@ -7,66 +7,92 @@
 <script src="Disk.js"></script>
 
 <link rel="stylesheet" href="solar.css">
+<head>
+    <style>
+       .webcontainer{position: absolute; width: 800px; height: 800px; bottom: 150px; left: 0px; z-index:-1;}
+       .frame{position: relative; border: 4px solid whitesmoke; left: 500px; text-align: center; width: 900px;}
+       .content{padding: 12px;}
+       .halves{width:49%; float:left; margin-right:2%;}
+    </style>
+</head>
+<body style="background-color:black;">
+    <div class="frame" >
+        <div class = "label">Zoom Out: </div>
+        <input type="range" min="1" max="200" value="50" class="slider" id="zoom" >
+        <p>
+        <p><div class = "label">Zoom Out:  <span id="zoutput"></span>%</p></div>
 
-<div class="slidecontainer">
-    Zoom:<input type="range" min="1" max="100" value="50" class="slider" id="zoom" >
-    <p>Zoom: <span id="output"></span>%</p>
-</div>
+        <div class = "label">Speed Up: </div>
+        <input type="range" min="1" max="200" value="1" class="slider" id="speed" >
+        <p><div class = "label">Speed Up:  <span id="soutput"></span>%</p></div>
+    </div>
+</body>
 <p>
-<script>
-    var slider = document.getElementById("zoom");
-    var output = document.getElementById("output");
-    output.innerHTML = slider.value; // Display the default slider value
+<body>
+    <script>
+        var zslider = document.getElementById("zoom");
+        var sslider = document.getElementById("speed");
+        var zoutput = document.getElementById("zoutput");
+        var soutput = document.getElementById("soutput");
 
-    // Update the current slider value (each time you drag the slider handle)
-    slider.oninput = function() {
-    output.innerHTML = this.value;
-    }
-</script>
-<p>
-<script id="Sphere-vertex-shader" type="x-shader/x-vertex">
-    in  vec4 aPosition;
-    
-    uniform mat4 P;
-    uniform mat4 MV;
+        zoutput.innerHTML = zslider.value; // Display the default slider value
+        soutput.innerHTML = sslider.value;
 
-    void main()
-    {
-        gl_PointSize = 3.0;
-        gl_Position = P * MV * aPosition;
-    }
-</script>
-<script id="Sphere-fragment-shader" type="x-shader/x-fragment">
-    out vec4 fColor;
+        // Update the current slider value (each time you drag the slider handle)
+        zslider.oninput = function() {
+        zoutput.innerHTML = this.value;
+        }
+        sslider.oninput = function() {
+        soutput.innerHTML = this.value;
+        }
+    </script>
+    <p>
+    <script id="Sphere-vertex-shader" type="x-shader/x-vertex">
+        in  vec4 aPosition;
+        
+        uniform mat4 P;
+        uniform mat4 MV;
 
-    uniform vec4  color;
+        void main()
+        {
+            gl_PointSize = 3.0;
+            gl_Position = P * MV * aPosition;
+        }
+    </script>
+    <script id="Sphere-fragment-shader" type="x-shader/x-fragment">
+        out vec4 fColor;
 
-    void main()
-    {
-        fColor = color;
-    }
-</script>
+        uniform vec4  color;
 
-<script id="Disk-vertex-shader" type="x-shader/x-vertex">
-    in  vec4 aPosition;
-    
-    uniform mat4 P;
-    uniform mat4 MV;
+        void main()
+        {
+            fColor = color;
+        }
+    </script>
 
-    void main()
-    {
-        gl_PointSize = 3.0;
-        gl_Position = P * MV * aPosition;
-    }
-</script>
-<script id="Disk-fragment-shader" type="x-shader/x-fragment">
-    out vec4 fColor;
+    <script id="Disk-vertex-shader" type="x-shader/x-vertex">
+        in  vec4 aPosition;
+        
+        uniform mat4 P;
+        uniform mat4 MV;
 
-    uniform vec4  color;
+        void main()
+        {
+            gl_PointSize = 3.0;
+            gl_Position = P * MV * aPosition;
+        }
+    </script>
+    <script id="Disk-fragment-shader" type="x-shader/x-fragment">
+        out vec4 fColor;
 
-    void main()
-    {
-        fColor = color;
-    }
-</script>
-<canvas id="webgl-canvas" width="800" height="800"></canvas>
+        uniform vec4  color;
+
+        void main()
+        {
+            fColor = color;
+        }
+    </script>
+    <div class = "webcontainer">
+        <canvas id="webgl-canvas" width="1900" height="1000" ></canvas>
+    </div>
+</body>
