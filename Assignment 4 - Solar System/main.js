@@ -7,11 +7,13 @@ var fovy;
 var aspect;
 
 var earthDay = 1;
-zoom = 1000;
+var zoom;
 
+var zoomMax = 2000;
 function init() {
 
-    var zoomHTML =  document.getElementById("zoom").value
+    
+    //console.log(zoomHTML.value);
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
 
@@ -52,10 +54,13 @@ function init() {
     saturnDisk.distance = 40;
     saturnDisk.color = vec4(.101,.95,.69, 1.0);
 
-    //zoom = zoomHTML.value
+    var zoomHTML =  document.getElementById("zoom");
+
+    zoom = (zoomHTML.value / 100) * zoomMax;
+    console.log(zoom);
 
     near = 1;
-    D = 2 * (zoom + Earth.distance + Moon.distance + Saturn.distance + Saturn.radius); //Idk why but the 2000 is nescessary
+    D = 2 * (zoom + Earth.distance + Moon.distance + Saturn.distance + Saturn.radius); 
 
 
     angle = Math.asin((D/2) / (near + (D/2)));
@@ -70,6 +75,17 @@ function init() {
 }
 
 function render() {
+    //Update Perspective by Sliders
+    zoomHTML =  document.getElementById("zoom");
+
+    zoom = (zoomHTML.value / 100) * zoomMax;
+    near = 1;
+    D = 2 * (zoom + Earth.distance + Moon.distance + Saturn.distance + Saturn.radius); 
+
+    angle = Math.asin((D/2) / (near + (D/2)));
+    fovy = 2 * angle;
+    far = near + D;
+    saturnDisk.P = Saturn.P = Sun.P = Earth.P = Moon.P = perspective(fovy, aspect, near, far);
 
     // Update your motion variables here
     earthDay += 1
