@@ -88,13 +88,17 @@ function render() {
     saturnDisk.P = Saturn.P = Sun.P = Earth.P = Moon.P = perspective(fovy, aspect, near, far);
 
     // Update your motion variables here
-    earthDay += 1
-    Sun.rotation = (earthDay/27);
-    Earth.rotation = earthDay;
-    Earth.year = earthDay/2;
-    Moon.rotation = earthDay;
 
-    Saturn.year = earthDay/3;
+    earthDayDelta = document.getElementById("speed");
+
+    earthDay += 1 * (earthDayDelta.value)
+    Sun.rotation = (earthDay/24.47);
+    Earth.rotation = earthDay;
+    Earth.year = earthDay/365.25;
+    Moon.rotation = earthDay/27.322;
+    Moon.revolution = earthDay/29.5
+
+    Saturn.year = earthDay/11000;
     //365 is too slow
     //console.log(Sun.rotation);
 
@@ -127,7 +131,7 @@ function render() {
     Earth.render();
     ms.pop();
     //Moon
-    ms.rotate(Moon.rotation, [0,20,0]); //Moon go around earth
+    ms.rotate(Moon.revolution, [0,20,0]); //Moon go around earth
     ms.translate(Moon.distance, 0, 0);
     ms.rotate(Moon.rotation, [1, 0,0]); //Dark side of the moon
     ms.scale(Moon.radius);
