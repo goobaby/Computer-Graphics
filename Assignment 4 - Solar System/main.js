@@ -53,6 +53,7 @@ function init() {
     near = 1;
     D = 2 * (2000 + Earth.distance + Moon.distance + Saturn.distance + Saturn.radius); //Idk why but the 2000 is nescessary
 
+    
     angle = Math.asin((D/2) / (near + (D/2)));
     fovy = 2 * angle;
     aspect = canvas.clientWidth/canvas.clientHeight
