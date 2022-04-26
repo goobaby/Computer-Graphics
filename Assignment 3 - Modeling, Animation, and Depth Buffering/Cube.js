@@ -106,6 +106,7 @@ function Cube(gl) {
       // gl.drawElements( gl.LINES, edges.length, gl.UNSIGNED_SHORT, 0 );
       
       gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, indices.buffer );
+      console.log(indices,length);
       gl.drawElements( gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0 );
   }
 };
