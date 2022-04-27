@@ -1,15 +1,20 @@
 import * as THREE from './three.js-master/build/three.module.js'
+import {GLTFLoader} from './three.js-master/examples/jsm/loaders/GLTFLoader.js'
+
 
 const canvas = document.querySelector('.webgl')
 const scene = new THREE.Scene()
 
 
-const geometry = new THREE.BoxGeometry(1,1,1)
-const material = new THREE.MeshBasicMaterial({
-    color: 'red'
-})
-const boxMesh = new THREE.Mesh(geometry, material)
-scene.add(boxMesh)
+//const loader = new GLTFLoader()
+
+
+// const geometry = new THREE.BoxGeometry(1,1,1)
+// const material = new THREE.MeshBasicMaterial({
+//     color: 'red'
+// })
+// const boxMesh = new THREE.Mesh(geometry, material)
+// scene.add(boxMesh)
 
 const sizes = {
     width: window.innerWidth,
