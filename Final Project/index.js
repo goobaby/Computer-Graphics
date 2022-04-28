@@ -20,7 +20,31 @@ loader.load('assests/burger.glb', function(glb){
     console.log('An error occured')
 })
 
+loader.load('assests/garfield/scene.gltf', function(gltf){
+    console.log(gltf)
+    const garf = gltf.scene;
+    garf.scale.set(0.01, 0.01, 0.01)
+    garf.rotation.y = 10
+    garf.position.set(0,0,-1)
+    scene.add(garf);
+}, function(xhr){
+    console.log((xhr.loaded/xhr.total * 100) + "% loaded")
+}, function(error){
+    console.log('An error occured')
+})
 
+loader.load('assests/eldgarf/scene.gltf', function(gltf){
+    console.log(gltf)
+    const eldgarf = gltf.scene;
+    eldgarf.scale.set(0.1, 0.1, 0.1)
+    eldgarf.rotation.y = 360
+    eldgarf.position.set(-1,.5,.1)
+    scene.add(eldgarf);
+}, function(xhr){
+    console.log((xhr.loaded/xhr.total * 100) + "% loaded")
+}, function(error){
+    console.log('An error occured')
+})
 
 
 
@@ -64,8 +88,10 @@ renderer.shadowMap.enabled = true
 renderer.render(scene, camera)
 
 function animate(){
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-}
+    requestAnimationFrame(animate);
 
+    //garf.rotation.x += 0.01
+
+    renderer.render(scene, camera);
+}
 animate()
