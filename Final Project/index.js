@@ -9,6 +9,9 @@ const scene = new THREE.Scene()
 
 const loader = new GLTFLoader()
 
+
+
+
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(5, 50, 50),
     new THREE.MeshBasicMaterial({
@@ -80,17 +83,18 @@ const sizes = {
 }
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(0,0,10)
+camera.position.set(0,0,15)
 
 const controls = new OrbitControls(camera, canvas)
-controls.enableZoom = false;
+controls.enableZoom = true;
 controls.enableDamping = true
 
 
 scene.add(camera)
 
-const renderer = new THREE.WebGL1Renderer({
-    canvas: canvas
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true
 })
 
 renderer.setSize(sizes.width, sizes.height)
@@ -102,7 +106,7 @@ renderer.render(scene, camera)
 function animate(){
     requestAnimationFrame(animate);
 
-    //garf.rotation.x += 0.01
+    sphere.rotation.y += 0.01
 
     renderer.render(scene, camera);
 }
