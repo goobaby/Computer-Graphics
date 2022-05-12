@@ -35,18 +35,18 @@ scene.add(sphere)
 //     console.log('An error occured')
 // })
 
-// loader.load('assests/garfield/scene.gltf', function(gltf){
-//     console.log(gltf)
-//     const garf = gltf.scene;
-//     garf.scale.set(0.01, 0.01, 0.01)
-//     garf.rotation.y = 10
-//     garf.position.set(0,0,-1)
-//     scene.add(garf);
-// }, function(xhr){
-//     console.log((xhr.loaded/xhr.total * 100) + "% loaded")
-// }, function(error){
-//     console.log('An error occured')
-// })
+loader.load('assests/garfield/scene.gltf', function(gltf){
+    console.log(gltf)
+    const garf = gltf.scene;
+    garf.scale.set(1, 1, 1)
+    garf.rotation.y = 10
+    garf.position.set(-2,-10,-10)
+    scene.add(garf);
+}, function(xhr){
+    console.log((xhr.loaded/xhr.total * 100) + "% loaded")
+}, function(error){
+    console.log('An error occured')
+})
 
 // loader.load('assests/eldgarf/scene.gltf', function(gltf){
 //     console.log(gltf)
@@ -82,7 +82,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(150, sizes.width / sizes.height, 0.1, 100000000)
 camera.position.set(0,0,15)
 
 const controls = new OrbitControls(camera, canvas)
