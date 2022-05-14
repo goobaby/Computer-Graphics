@@ -1,0 +1,11 @@
+Model Information:
+* title:	Meme Challenge : Creepy Garfield
+* source:	https://sketchfab.com/3d-models/meme-challenge-creepy-garfield-f05d5345f39644c392eec9f8c724a628
+* author:	Jade L (https://sketchfab.com/3levan)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Meme Challenge : Creepy Garfield" (https://sketchfab.com/3d-models/meme-challenge-creepy-garfield-f05d5345f39644c392eec9f8c724a628) by Jade L (https://sketchfab.com/3levan) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
